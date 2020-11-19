@@ -1,19 +1,26 @@
-import getpass
+import json
 import base64
+import getpass
 import urllib2
-import requests
 
-theUrl = 'https://api.twitter.com/' #updated twitter rest api
+TWITTER_REST_API = 'https://www.twitter.com/'
 
-def authenticate():
-    username = raw_input("Username: ")
-    __password = getpass.getpass(prompt = 'Password for {}: '.format(username))
+class twitterAPI:
 
-    request = urllib2.Request(theUrl)
-    base64string = base64.b64encode('%s:%s' % (username, __password))
-    request.add_header("Authorization", "Basic %s" % base64string)   
-    result = urllib2.urlopen(request)
-    print result.read()
+    def __init__(self):
+        self.username = raw_input("Username: ")
+        self.__password = getpass.getpass(prompt = 'Password for {}: '.format(self.username))
+
+    def authenticate(self, theUrl):
+
+        base64string = base64.b64encode('%s:%s' % (self.username, self.__password))
+        request = urllib2.Request(theUrl)
+        request.add_header("Authorization", "Basic %s" % base64string)   
+        result = urllib2.urlopen(request)
+        payLoad = result.read()
+        print payLoad
+
 
 if __name__ == '__main__':
-    authenticate()
+    twitterAPI = twitterAPI()
+    twitterAPI.authenticate(TWITTER_REST_API)
