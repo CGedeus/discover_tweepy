@@ -1,16 +1,24 @@
+import csv
 import tweepy
 
 class OAuthenticate:
 
     def __init__(self):
-        self.__consumer_key = 'gFeFomO5gld5cx2dq6qWDfLKp'
-        self.__consumer_secret = 'XrtYhEPi5oo4nH1FrkZ4ohJWsIrTmAQ3vZJBQD9bHgQz09jYcr'
-        self.__access_token = '1318734464898433024-TIkLQh4RKLeYJI7EdnDVkKXDN84iP1'
-        self.__access_token_secret = '36KN1CRpbkzRBfltWQ4t5F5Go5kjPas94eIVweUCr9Bih'
+        '''
+        Get tokens/keys from external file
+        '''
+        self.__key_token_list = []
+
+        with open('secret_keys.csv', 'r') as fin:
+            column = csv.reader(fin)
+            header = (next(column))
+
+            for data in header:
+                self.__key_token_list.append(data)
 
     def main(self):
-        auth = tweepy.OAuthHandler(self.__consumer_key, self.__consumer_secret)
-        auth.set_access_token(self.__access_token, self.__access_token_secret)
+        auth = tweepy.OAuthHandler(self.__key_token_list[0], self.__key_token_list[1])
+        auth.set_access_token(self.__key_token_list[2], self.__key_token_list[3])
 
         api = tweepy.API(auth)
 
