@@ -1,23 +1,50 @@
+import csv
 import tweepy
+import argparse
 
 class OAuthenticate:
 
     def __init__(self):
-        self.__consumer_key = 'gFeFomO5gld5cx2dq6qWDfLKp'
-        self.__consumer_secret = 'XrtYhEPi5oo4nH1FrkZ4ohJWsIrTmAQ3vZJBQD9bHgQz09jYcr'
-        self.__access_token = '1318734464898433024-TIkLQh4RKLeYJI7EdnDVkKXDN84iP1'
-        self.__access_token_secret = '36KN1CRpbkzRBfltWQ4t5F5Go5kjPas94eIVweUCr9Bih'
+        '''
+        Get tokens/keys from external file
+        '''
+        self.__key_token_list = []
+
+        with open('secret_keys.csv', 'r') as fin:
+            column = csv.reader(fin)
+            header = (next(column))
+
+            for data in header:
+                self.__key_token_list.append(data)
+
+    def user_data(self, oauth, arg):
+        '''
+        Get user data
+        '''
+        api = tweepy.API(oauth)
+        for tweet in tweepy.Cursor(api.search,q="from:" + arg.handle + " " + arg.tag).items():
+            print(tweet)
 
     def main(self):
-        auth = tweepy.OAuthHandler(self.__consumer_key, self.__consumer_secret)
-        auth.set_access_token(self.__access_token, self.__access_token_secret)
-
+        '''
+        Authenticate into API:
+            - consumer_key
+            - consumer_secret
+            - access_token
+            - access_token_secret
+        '''
+        auth = tweepy.OAuthHandler(self.__key_token_list[0], self.__key_token_list[1])
+        auth.set_access_token(self.__key_token_list[2], self.__key_token_list[3])
         api = tweepy.API(auth)
+        return auth
 
-        public_tweets = api.home_timeline()
-        for tweet in public_tweets:
-            print(tweet.text.encode('utf-8'))
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description = 'Specified arguments to querying data')
+    parser.add_argument('--handle', metavar = 'handle', type = str, help = 'Twitter Handle')
+    parser.add_argument('--tag', metavar = 'tag', type = str, help = '#HASHTAG')
+    args = parser.parse_args()
+
     OAuthenticate = OAuthenticate()
-    OAuthenticate.main()
+    oauth = OAuthenticate.main()
+    OAuthenticate.user_data(oauth, args)
