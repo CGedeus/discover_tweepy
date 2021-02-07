@@ -1,3 +1,5 @@
+# Explore twitter more effectively with Discover Tweepy.
+
 import csv
 import tweepy
 import argparse
