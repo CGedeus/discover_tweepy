@@ -22,7 +22,7 @@ class OAuthenticate:
         Get user data
         '''
         api = tweepy.API(oauth)
-        for tweet in tweepy.Cursor(api.search,q="from:" + arg.handle + " " + arg.tag).items():
+        for tweet in tweepy.Cursor(api.search,q="from:" + arg.handle + " " + arg.query).items():
             print(tweet)
 
     def main(self):
