@@ -42,7 +42,7 @@ class OAuthenticate:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Specified arguments to querying data')
     parser.add_argument('--handle', metavar = 'handle', type = str, help = 'Twitter Handle')
-    parser.add_argument('--tag', metavar = 'tag', type = str, help = '#HASHTAG')
+    parser.add_argument('--query', metavar = 'query', type = str, help = 'Query for specified text')
     args = parser.parse_args()
 
     OAuthenticate = OAuthenticate()
